@@ -2,6 +2,7 @@ import { SlackEventType } from '../types/event';
 import {
   IncomingSlackEvent,
   IncomingSlackInteractivity,
+  IncomingSlackViewInteractivity,
 } from './incoming.interface';
 
 export type SlackEventHandlerConfig = {
@@ -12,6 +13,10 @@ export type SlackEventHandlerConfig = {
 
 export type SlackInteractivityHandlerConfig = {
   actionId?: string;
-  filter?: (event: IncomingSlackInteractivity) => boolean;
-  handler: (event: IncomingSlackInteractivity) => Promise<unknown>;
+  filter?: (
+    event: IncomingSlackInteractivity | IncomingSlackViewInteractivity,
+  ) => boolean;
+  handler: (
+    event: IncomingSlackInteractivity | IncomingSlackViewInteractivity,
+  ) => Promise<unknown>;
 };

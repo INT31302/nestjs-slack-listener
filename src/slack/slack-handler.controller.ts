@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Res } from '@nestjs/common';
 import { IncomingSlackEvent } from './interfaces';
 import { SlackHandler } from './slack-handler.service';
+import { Response } from 'express';
 
 @Controller('slack')
 export class SlackEventsController {
@@ -17,7 +18,12 @@ export class SlackEventsController {
   }
 
   @Post(`interactivity`)
-  async handleInteractivity(@Body() params: { payload: string }) {
-    return this.slackHandler.handleInteractivity(JSON.parse(params.payload));
+  async handleInteractivity(
+    @Body() params: { payload: string },
+    @Res() response: Response,
+  ) {
+    const parsedPayload = JSON.parse(params.payload);
+    await this.slackHandler.handleInteractivity(parsedPayload);
+    return response.status(200).send();
   }
 }

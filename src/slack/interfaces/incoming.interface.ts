@@ -1,5 +1,8 @@
 import { Member } from '@slack/web-api/dist/response/UsersListResponse';
 import { SlackEventType } from '../types/event';
+import { Block } from '@slack/web-api';
+import { Close, State } from '@slack/web-api/dist/response/ViewsOpenResponse';
+import { Enterprise } from '@slack/web-api/dist/response/OauthV2AccessResponse';
 
 export interface IncomingSlackCommand {
   token: string;
@@ -123,7 +126,47 @@ export interface IncomingSlackInteractivity {
       action_ts: string;
       selected_option?: any;
       selected_user?: string;
+      selected_time?: string;
       initial_option?: any;
     },
   ];
+}
+
+export interface IncomingSlackViewInteractivity {
+  type: string;
+  user: {
+    id: string;
+    username: string;
+    name: string;
+    team_id: string;
+  };
+  team: {
+    id: string;
+    domain: string;
+  };
+  view: {
+    id: string;
+    team_id: string;
+    type: 'modal';
+    blocks: Block[];
+    private_metadata: string;
+    callback_id: string;
+    state: State;
+    hash: string;
+    title: Close;
+    clear_on_close: boolean;
+    notify_on_close: boolean;
+    close: Close;
+    submit: Close;
+    previous_view_id: string;
+    root_view_id: string;
+    app_id: string;
+    external_id: string;
+    app_installed_team_id: string;
+    bot_id: string;
+  };
+  hash: string;
+  response_urls: string[];
+  is_enterprise_install: boolean;
+  enterprise: Enterprise;
 }
